@@ -55,6 +55,12 @@ ASTRA INTEL is a working prototype of an AI-powered defence document analyst tha
 
 
 
+
+
+
+
+
+
                          ┌──────────────────────┐
                          │        USER          │
                          │ Question / Upload    │
