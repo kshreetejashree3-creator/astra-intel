@@ -42,3 +42,75 @@ For Streamlit Community Cloud, put the key in the app Secrets settings instead.
 - Page/section evidence
 - Chat history and clear-history
 - Duplicate upload protection
+
+## Architecture
+
+![ASTRA INTEL Architecture](assets/architecture.png)
+
+
+
+                         ┌──────────────────────┐
+                         │        USER          │
+                         │ Question / Upload    │
+                         └──────────┬───────────┘
+                                    │
+                                    ▼
+                    ┌─────────────────────────────┐
+                    │     STREAMLIT FRONTEND      │
+                    │          app.py             │
+                    │ Chat • Upload • History     │
+                    │ Clear / Remove              │
+                    └───────┬─────────────┬───────┘
+                            │             │
+                Upload      │             │ Question
+                            ▼             ▼
+                 ┌────────────────┐  ┌──────────────────┐
+                 │    DOCUMENT    │  │    RETRIEVAL     │
+                 │   INGESTION    │  │  Similarity      │
+                 │ PDF/TXT/MD     │  │  Search          │
+                 └───────┬────────┘  │ PER_DOC_K = 6   │
+                         │           └────────┬─────────┘
+                         ▼                    │
+                 ┌────────────────┐           │
+                 │ PAGE-AWARE     │           │
+                 │ CHUNKING       │           │
+                 └───────┬────────┘           │
+                         ▼                    │
+                 ┌────────────────┐           │
+                 │   MINILM       │           │
+                 │  EMBEDDINGS    │           │
+                 │ Text → Vector  │           │
+                 └───────┬────────┘           │
+                         ▼                    │
+                 ┌────────────────┐◄──────────┘
+                 │  VECTOR INDEX  │
+                 │ Chunks +       │
+                 │ Embeddings     │
+                 └───────┬────────┘
+                         │
+                         ▼
+                 ┌────────────────────┐
+                 │ RETRIEVED CONTEXT  │
+                 │ Relevant chunks +  │
+                 │ document/page info │
+                 └─────────┬──────────┘
+                           ▼
+                 ┌────────────────────┐
+                 │ GEMINI 2.5 FLASH   │
+                 │ Grounded Answer    │
+                 │ Generation         │
+                 └─────────┬──────────┘
+                           ▼
+                 ┌────────────────────┐
+                 │ ANSWER + EVIDENCE  │
+                 │ Document / Page    │
+                 │ Citations          │
+                 └─────────┬──────────┘
+                           │
+                           ▼
+                 ┌────────────────────┐
+                 │ STREAMLIT FRONTEND │
+                 └────────────────────┘
+
+
+                 
