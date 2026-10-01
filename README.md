@@ -43,7 +43,13 @@ For Streamlit Community Cloud, put the key in the app Secrets settings instead.
 - Chat history and clear-history
 - Duplicate upload protection
 
-## Architecture
+
+## Summary
+
+ASTRA INTEL is a working prototype of an AI-powered defence document analyst that enables users to upload technical documents, ask natural-language questions, and receive answers grounded in the information contained within those documents. The system uses a Retrieval-Augmented Generation (RAG) pipeline in which documents are extracted, divided into smaller chunks, converted into embeddings, and stored in a searchable vector index. When a user submits a question, it is converted into an embedding and compared with the indexed document content to retrieve the most relevant information. This retrieved evidence is then provided to the Gemini language model to generate a contextual answer. The prototype presents the results through an interactive Streamlit interface and provides source citations so users can trace the answer back to the relevant document, page, section, or supporting passage.
+
+
+## Architecture 
 
 ![ASTRA INTEL Architecture](assets/architecture.png)
 
